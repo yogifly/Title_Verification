@@ -1,0 +1,22 @@
+existing_titles = [
+    "The Hindu", "Indian Express", "Daily News", "Morning Times", "Samachar Bharati",
+    "The Pioneer", "The National Herald", "India Today", "दैनिक जागरण", "Hindustan Times",
+    "अमर उजाला", "The Telegraph", "Deccan Herald", "The Tribune", "Financial Express",
+    "Economic Times", "Business Standard", "The Statesman", "The Independent", "The Observer",
+    "जनसत्ता", "नवभारत टाइम्स", "The Free Press Journal", "प्रभात खबर", "राजस्थान पत्रिका",
+    "सकाळ", "मलाईमला मनोरमा", "Dina Thanthi", "Eenadu", "Andhra Jyothy",
+    "महाराष्ट्र टाइम्स", "સંદેશ", "लोकमत", "गुजरात समाचार", "कर्नाटका प्रभा",
+    "Udayavani", "Mathrubhumi", "Samaya", "Sambad", "The Assam Tribune",
+    "Nagaland Post", "Shillong Times", "The Sentinel", "Himachal Dastak", "Kashmir Times",
+    "Greater Kashmir", "पंजाब केसरी", "देशबन्धु", "Andhra Bhoomi", "Vijay Karnataka",
+    "दिनकरण", "Mangaluru Today", "Navodaya Times", "Tamil Murasu", "Sakshi Post",
+    "Telangana Today", "मुंबई मिरर", "Calcutta Gazette", "Delhi Recorder", "Express India",
+    "संयुक्त कर्नाटका", "दिव्य मराठी", "The Sunday Guardian", "गोवा टाइम्स", "ओडिशा भाष्कर",
+    "Bangalore Mirror", "Chennai Chronicle", "Patna Herald", "Ranchi Express", "Lucknow Observer",
+    "Jammu Journal", "Punjab Tribune", "भोपाल पत्रिका", "जयपुर टाइम्स", "पुणे समाचार",
+    "Indore Chronicle", "Surat Samvad", "बिहार वाणी", "Chandigarh Live", "नागपूर न्यूज",
+    "Thiruvananthapuram Post", "Bhubaneswar Mirror", "Kolkata Gazette", "Delhi Standard", "उत्तराखंड रिपोर्टर",
+    "Andaman Chronicle", "Lakshadweep Times", "Kochi Journal", "Madurai Express", "Manipur Gazette",
+    "Mizoram News", "Arunachal Observer", "Meghalaya Daily", "Tripura Chronicle", "Puducherry Express",
+    "मुंबई येथे", "अफ्रिकन बॅट"
+]
