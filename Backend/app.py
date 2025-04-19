@@ -5,13 +5,31 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from rapidfuzz.distance import Levenshtein
 from metaphone import doublemetaphone
+import traceback
+import os
 import numpy as np
 import faiss
 import pickle
-from indic_transliteration.sanscript import SchemeMap, SCHEMES, transliterate
+from indic_transliteration.sanscript import SCHEMES, transliterate
 
+import google.generativeai as genai
 import firebase_admin
 from firebase_admin import credentials, firestore
+
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
+# Get the API key securely
+api_key = os.getenv("GOOGLE_API_KEY")
+
+if not api_key:
+    raise EnvironmentError("GOOGLE_API_KEY not found in .env")
+
+# Configure the Gemini API client
+genai.configure(api_key=api_key)
+client = genai.GenerativeModel()
 
 # Initialize Firebase
 cred = credentials.Certificate("firebase-adminsdk.json")  # <-- update with your path
@@ -208,6 +226,33 @@ def verify_title():
         "constraint_status": constraints_status
     })
 
+@app.route('/suggest-title', methods=['POST'])
+def suggest_title():
+    data = request.get_json()
+    abstract = data.get('abstract')
+    
+    # Modify prompt to ask for clean and structured title suggestions
+    prompt = f"Suggest a list of concise, catchy, and professional publication titles based on the following abstract:\n\n{abstract}\n\nProvide only the titles without extra explanations or commentary."
+
+    try:
+        gemini_response = client.generate_content(
+            contents=prompt
+        )
+
+        # Clean up the response to return only titles
+        # Strip out any commentary or unnecessary information
+        titles = gemini_response.text.strip().split("\n")
+
+        # Ensure only valid titles are returned (removes empty strings or unwanted text)
+        titles = [title.strip() for title in titles if title.strip()]
+
+        # Return the cleaned list of titles
+        return jsonify({"titles": titles})
+
+    except Exception as e:
+        print("Error occurred:", e)
+        print("Traceback:", traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

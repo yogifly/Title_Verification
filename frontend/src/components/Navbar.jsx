@@ -10,6 +10,7 @@ function Navbar() {
         <li><Link to="/">Home</Link></li>
         <li><Link to="/title-checker">Title-Verification</Link></li>
         <li><Link to="/title-suggestions">Title-checker</Link></li>
+        <li><Link to="/suggest">Title Suggestions</Link></li>
       </ul>
     </nav>
   );

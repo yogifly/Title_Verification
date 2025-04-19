@@ -118,4 +118,21 @@
     flex-direction: column;
     gap: 10px;
   }
+  textarea {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+  
+  .suggestion-box {
+    margin-top: 2rem;
+    background-color: #f4f4f4;
+    padding: 1rem;
+    border-left: 5px solid #00C49F;
+    border-radius: 8px;
+  }
   
