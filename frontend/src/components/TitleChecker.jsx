@@ -3,7 +3,7 @@ import axios from "axios";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
-import "../App.css";
+import "./TitleChecker.css";
 
 const stateShortMap = {
   Maharashtra: "MUM",

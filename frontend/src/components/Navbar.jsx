@@ -5,11 +5,11 @@ import "./Navbar.css";
 function Navbar() {
   return (
     <nav className="navbar">
-      <h2 className="logo">Title Verification</h2>
+      <div className="logo">Authentica.ai</div>
       <ul className="nav-links">
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/title-checker">Title-Verification</Link></li>
-        <li><Link to="/title-suggestions">Title-checker</Link></li>
+        <li><Link to="/title-checker">Title Verification</Link></li>
+        <li><Link to="/title-suggestions">Title Checker</Link></li>
         <li><Link to="/suggest">Title Suggestions</Link></li>
       </ul>
     </nav>

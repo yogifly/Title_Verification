@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../App.css"; // for styling
+import "./SuggestTitle.css"; // for styling
 
 function SuggestTitle() {
   const [abstract, setAbstract] = useState("");
