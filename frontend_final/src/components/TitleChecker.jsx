@@ -4,6 +4,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { useNavigate } from "react-router-dom";
 import "./TitleChecker.css";
 
+// Consistent colors across the application
 const COLORS = ["#00C49F", "#FF8042"];
 
 function TitleChecker() {
@@ -77,7 +78,11 @@ function TitleChecker() {
 
   const renderConstraint = (label, passed) => (
     <div className={`constraint ${passed ? "pass" : "fail"}`}>
-      <input type="checkbox" checked={passed} readOnly />
+      <div className="checkbox-container">
+        <div className="checkmark">
+          {passed ? "✓" : "✗"}
+        </div>
+      </div>
       <span>{label}</span>
     </div>
   );
@@ -103,25 +108,7 @@ function TitleChecker() {
         },
       ]
     : [];
-    const COLORS = ['#00C49F', '#FF6B6B'];
- // "Similar" = greenish, "Unique" = orange
 
-    <PieChart width={300} height={300}>
-      <Pie
-        data={pieData}
-        dataKey="value"
-        nameKey="name"
-        cx="50%"
-        cy="50%"
-        outerRadius={100}
-        fill="#8884d8"
-        label
-      >
-        {pieData.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-    </PieChart>
   return (
     <div className="main-container">
       <h1>Title Verification System</h1>
@@ -181,7 +168,16 @@ function TitleChecker() {
 
       {/* Results (shown after animation) */}
       {result && !showModal && (
-        <div className="two-column">
+        // Use flex layout for Accepted status or when only similarity check fails
+        <div className={
+          (result.status === "Accepted" || 
+          (result.status === "Rejected" && 
+           result.constraint_status && 
+           result.constraint_status.similarity_check === false && 
+           result.constraint_status.guideline_check === true && 
+           result.constraint_status.prefix_suffix_check === true))
+          ? "two-column" : "single-column"
+        }>
           {/* Left Column */}
           <div className="left-column">
             <h2>Result: {result.status}</h2>
@@ -205,39 +201,62 @@ function TitleChecker() {
             )}
           </div>
 
-          {/* Right Column */}
-          <div className="right-column">
-            {pieData.length > 0 && (
-              <div className="chart-box">
-                <h3>Verification Probability</h3>
-                <PieChart width={250} height={250}>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
-                    outerRadius={80}
-                    dataKey="value"
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </div>
-            )}
-
-            {result?.status === "Accepted" && (
-              <div className="register-button-container">
-                <button className="register-button" onClick={handleRegisterClick}>
-                  Register Title
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Right Column - Only show in two-column layout */}
+          {((result.status === "Accepted") || 
+            (result.status === "Rejected" && 
+             result.constraint_status && 
+             result.constraint_status.similarity_check === false && 
+             result.constraint_status.guideline_check === true && 
+             result.constraint_status.prefix_suffix_check === true)) && (
+            <div className="right-column">
+              {pieData.length > 0 && (
+                <div className="chart-box">
+                  <h3>Verification Probability</h3>
+                  <PieChart width={250} height={250}>
+                    <Pie
+                      data={pieData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+                      outerRadius={80}
+                      dataKey="value"
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </div>
+              )}
+              
+              {/* Register button in right column when status is Accepted */}
+              {result?.status === "Accepted" && (
+                <div className="register-button-container">
+                  <button className="register-button" onClick={handleRegisterClick}>
+                    Register Title
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Register button in single-column layout for Accepted status */}
+          {result?.status === "Accepted" && 
+           !((result.status === "Accepted") || 
+             (result.status === "Rejected" && 
+              result.constraint_status && 
+              result.constraint_status.similarity_check === false && 
+              result.constraint_status.guideline_check === true && 
+              result.constraint_status.prefix_suffix_check === true)) && (
+            <div className="register-button-container">
+              <button className="register-button" onClick={handleRegisterClick}>
+                Register Title
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
