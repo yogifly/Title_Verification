@@ -1,47 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { useNavigate } from "react-router-dom";
 import "./TitleChecker.css";
-
-const stateShortMap = {
-  Maharashtra: "MUM",
-  Gujarat: "GUJ",
-  Delhi: "DEL",
-  Karnataka: "KAR",
-  TamilNadu: "TN",
-  Rajasthan: "RAJ",
-};
-
-const languageCodeMap = {
-  English: "ENG",
-  Hindi: "HIN",
-  Marathi: "MAR",
-};
 
 const COLORS = ["#00C49F", "#FF8042"];
 
-function App() {
+function TitleChecker() {
   const [title, setTitle] = useState("");
   const [result, setResult] = useState(null);
-  const [formData, setFormData] = useState({
-    ownerName: "",
-    state: "",
-    publicationDistrict: "",
-    language: "",
-  });
+  const [showModal, setShowModal] = useState(false);
+  const [animationStep, setAnimationStep] = useState(0);
+  const [constraintResults, setConstraintResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Handle animation sequence for constraint checks
+  useEffect(() => {
+    if (showModal && constraintResults.length > 0 && !isLoading) {
+      if (animationStep < constraintResults.length) {
+        const timer = setTimeout(() => {
+          setAnimationStep(prev => prev + 1);
+        }, 800); // Time between each constraint animation
+        return () => clearTimeout(timer);
+      } else {
+        // After all constraints are animated, show final result
+        const timer = setTimeout(() => {
+          setShowModal(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [showModal, animationStep, constraintResults.length, isLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setResult(null);
+    setShowModal(true);
+    setAnimationStep(0);
+    setConstraintResults([]);
+    setIsLoading(true);
+    
     try {
       const response = await axios.post("http://127.0.0.1:5000/verify", {
         title,
       });
+      
+      // Store the result first
       setResult(response.data);
+      
+      // Then prepare constraint results for animation
+      if (response.data.constraint_status) {
+        setConstraintResults([
+          { 
+            label: "Guidelines Enforcement", 
+            passed: response.data.constraint_status.guideline_check 
+          },
+          { 
+            label: "Prefix/Suffix Handling", 
+            passed: response.data.constraint_status.prefix_suffix_check 
+          },
+          { 
+            label: "Similarity Check", 
+            passed: response.data.constraint_status.similarity_check 
+          }
+        ]);
+      }
+      
+      setIsLoading(false);
     } catch (error) {
       console.error("Error verifying title:", error);
+      setShowModal(false);
+      setIsLoading(false);
     }
   };
 
@@ -52,33 +82,13 @@ function App() {
     </div>
   );
 
-  const generateTitleCode = () => {
-    const stateCode = stateShortMap[formData.state] || "UNK";
-    const langCode = languageCodeMap[formData.language] || "UNK";
-    const randomCode = Math.floor(10000 + Math.random() * 90000);
-    return `${stateCode}${langCode}${randomCode}`;
-  };
-
-  const handleRegister = async () => {
-    const generatedCode = generateTitleCode();
-    try {
-      await addDoc(collection(db, "titles"), {
-        title,
-        titleCode: generatedCode,
-        ownerName: formData.ownerName,
-        state: formData.state,
-        language: formData.language,
-        publicationDistrict: formData.publicationDistrict,
-        registeredAt: new Date().toISOString(),
-      });
-      alert("Title registered successfully!");
-      setFormData({ ownerName: "", state: "", publicationDistrict: "", language: "" });
-      setTitle("");
-      setResult(null);
-    } catch (err) {
-      console.error("Error registering title:", err);
-      alert("Failed to register title.");
-    }
+  const handleRegisterClick = () => {
+    navigate("/register", { 
+      state: { 
+        title: title, 
+        verificationProbability: result?.verification_probability 
+      } 
+    });
   };
 
   const pieData = result?.verification_probability
@@ -93,7 +103,25 @@ function App() {
         },
       ]
     : [];
+    const COLORS = ['#00C49F', '#FF6B6B'];
+ // "Similar" = greenish, "Unique" = orange
 
+    <PieChart width={300} height={300}>
+      <Pie
+        data={pieData}
+        dataKey="value"
+        nameKey="name"
+        cx="50%"
+        cy="50%"
+        outerRadius={100}
+        fill="#8884d8"
+        label
+      >
+        {pieData.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+    </PieChart>
   return (
     <div className="main-container">
       <h1>Title Verification System</h1>
@@ -105,10 +133,54 @@ function App() {
           placeholder="Enter Title"
           required
         />
-        <button type="submit">Verify Title</button>
+        <button type="submit" id="verify-btn">Verify Title</button>
       </form>
 
-      {result && (
+      {/* Animated Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Verifying Title...</h2>
+            
+            {isLoading ? (
+              <div className="loading-spinner">
+                <div className="spinner"></div>
+              </div>
+            ) : (
+              <>
+                <div className="constraints-animation">
+                  {constraintResults.map((constraint, index) => (
+                    <div 
+                      key={index} 
+                      className={`constraint-item ${index < animationStep ? (constraint.passed ? "pass" : "fail") : ""} ${index === animationStep - 1 ? "animate" : ""}`}
+                    >
+                      <div className="checkbox-container">
+                        {index < animationStep && (
+                          <div className="checkmark">
+                            {constraint.passed ? "✓" : "✗"}
+                          </div>
+                        )}
+                      </div>
+                      <span>{constraint.label}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                {result && animationStep >= constraintResults.length && (
+                  <div className="result-animation">
+                    <h3 className={result.status === "Accepted" ? "accepted" : "rejected"}>
+                      {result.status}
+                    </h3>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Results (shown after animation) */}
+      {result && !showModal && (
         <div className="two-column">
           {/* Left Column */}
           <div className="left-column">
@@ -158,49 +230,11 @@ function App() {
               </div>
             )}
 
-            {result.status === "Accepted" && (
-              <div className="register-box">
-                <h3>Register Accepted Title</h3>
-
-                <input
-                  type="text"
-                  placeholder="Owner Name"
-                  value={formData.ownerName}
-                  onChange={(e) => setFormData({ ...formData, ownerName: e.target.value })}
-                  required
-                />
-
-                <select
-                  value={formData.state}
-                  onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                  required
-                >
-                  <option value="">Select State</option>
-                  {Object.keys(stateShortMap).map((state) => (
-                    <option key={state} value={state}>{state}</option>
-                  ))}
-                </select>
-
-                <select
-                  value={formData.language}
-                  onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                  required
-                >
-                  <option value="">Select Language</option>
-                  {Object.keys(languageCodeMap).map((lang) => (
-                    <option key={lang} value={lang}>{lang}</option>
-                  ))}
-                </select>
-
-                <input
-                  type="text"
-                  placeholder="Publication State/District"
-                  value={formData.publicationDistrict}
-                  onChange={(e) => setFormData({ ...formData, publicationDistrict: e.target.value })}
-                  required
-                />
-
-                <button onClick={handleRegister}>Register Title</button>
+            {result?.status === "Accepted" && (
+              <div className="register-button-container">
+                <button className="register-button" onClick={handleRegisterClick}>
+                  Register Title
+                </button>
               </div>
             )}
           </div>
@@ -210,4 +244,4 @@ function App() {
   );
 }
 
-export default App;
+export default TitleChecker;

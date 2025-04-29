@@ -107,12 +107,14 @@ void main() {
 `;
 
 export default function Balatro({
-  spinRotation = -2.0,
-  spinSpeed = 7.0,
+  spinRotation = -5.0,
+  spinSpeed = 4.0,
   offset = [0.0, 0.0],
-  color1 = "#DE443B",
-  color2 = "#006BB4",
-  color3 = "#162325",
+  color1 = "#4B0082", // Indigo (darker purple)
+  color2 = "#2E0041", // Dark Purple
+  color3 = "#000000", // Black
+  
+ 
   contrast = 3.5,
   lighting = 0.4,
   spinAmount = 0.25,

@@ -1,138 +1,419 @@
+/* SuggestTitle.css */
+
+
 .main-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 2rem;
-    font-family: Arial, sans-serif;
-    background: #f9f9f9;
-    border-radius: 10px;
+  min-height: 100vh;
+  background: var(--secondary-gradient);
+  color: var(--text-primary);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.title-generator-card {
+  width: 100%;
+  max-width: 800px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+}
+
+.title-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #d8b4fe, #f9a8d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+}
+
+.sparkle-icon,
+.sparkle-button-icon,
+.sparkle-icon.small {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.sparkle-icon.small {
+  width: 16px;
+  height: 16px;
+}
+
+.sparkle-icon::before,
+.sparkle-button-icon::before,
+.sparkle-icon.small::before {
+  content: "✨";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #eab308;
+}
+
+.sparkle-icon.small::before {
+  font-size: 14px;
+}
+
+.textarea-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+/* Fix for textarea and submit button positioning */
+.textarea-container {
+  position: relative;
+  margin-bottom: 2rem; /* Increased from 1.5rem for more space */
+  width: 100%; /* Ensure full width */
+}
+
+textarea {
+  
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  resize: none;
+  transition: all var(--animation-timing);
+  width: 100%;
+  display: block; /* Ensures the textarea takes full width */
+  margin-bottom: 1rem; /* Adds space after textarea */
+  min-height: 150px; /* Ensures consistent height */
+}
+
+.character-count {
+  position: absolute;
+  bottom: 1rem; /* Adjusted for better positioning */
+  right: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background-color: rgba(0, 0, 0, 0.2); /* Optional: adds a slight background */
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.submit-button {
+  width: 100%;
+  position: relative; /* Ensures proper positioning */
+  display: block; /* Makes button take full width */
+  margin-top: 1rem; /* Space between textarea and button */
+  padding: 1rem 1.5rem;
+  clear: both; /* Ensures no floating elements interfere */
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.submit-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--button-gradient);
+  border: none;
+  border-radius: 0.75rem;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--animation-timing);
+  box-shadow: 0 4px 12px rgba(87, 220, 244, 0.3);
+}
+
+.submit-button:hover:not(:disabled) {
+  background: var(--button-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(70, 181, 229, 0.4);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-icon {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: all var(--animation-timing);
+}
+
+.arrow-icon::before {
+  content: "→";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.submit-button:hover:not(:disabled) .arrow-icon {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.loader-icon {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.fancy-spinner {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.spinner-inner {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.spinner-circle-1 {
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(167, 139, 250, 0.2);
+  border-top: 4px solid rgba(167, 139, 250, 0.8);
+  animation: spin 1s linear infinite;
+}
+
+.spinner-circle-2 {
+  width: 100%;
+  height: 100%;
+  border: 4px solid transparent;
+  border-bottom: 4px solid rgba(244, 114, 182, 0.8);
+  animation: spin 1.5s linear infinite reverse;
+}
+
+.loading-text {
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.suggestions-box {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  margin-top: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.suggestions-box.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.suggestions-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  color: #f9a8d4;
+}
+
+.suggestions-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.suggestion-item {
+  background: linear-gradient(to right, rgba(62, 202, 237, 0.4), rgba(34, 111, 206, 0.4));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all var(--animation-timing);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+.suggestion-item:hover {
+  border-color: var(--border-hover);
+}
+
+.title-text {
+  color: rgba(224, 231, 255, 0.9);
+}
+
+.copy-button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color var(--animation-timing);
+}
+
+.copy-button:hover {
+  color: white;
+}
+
+.copy-icon,
+.check-icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+.copy-icon::before {
+  content: "📋";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.check-icon::before {
+  content: "✓";
+  color: #4ade80;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.footer {
+  margin-top: 2rem;
+  color: rgba(199, 210, 254, 0.7);
+  font-size: 0.875rem;
+}
+
+/* Animations */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .title-generator-card {
+    padding: 1.5rem;
   }
   
-  form {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1.5rem;
+  h1 {
+    font-size: 1.5rem;
   }
-  
-  input[type="text"] {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  button {
-    padding: 0.6rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .result-container {
-    padding: 1rem;
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-  }
-  
-  .constraints-box {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: #f1f1f1;
-    border-radius: 8px;
-  }
-  
-  .constraint {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-  }
-  
-  .constraint input {
-    margin-right: 0.5rem;
-  }
-  
-  .pass {
-    color: green;
-  }
-  
-  .fail {
-    color: red;
-  }
-  
-  .reason {
-    margin-top: 1rem;
-    color: #d9534f;
-    font-weight: bold;
-  }
-  select, .register-box input {
-    width: 100%;
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    border-radius: 5px;
-  }
-  .register-box {
-    margin-top: 1rem;
-    background: #e8f0fe;
-    padding: 1rem;
-    border-radius: 10px;
-  }
-  
-  .register-box input {
-    display: block;
-    width: 100%;
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: 1px solid #aaa;
-  }
-  
-  .two-column {
-    display: flex;
-    gap: 30px;
-    margin-top: 20px;
-  }
-  
-  .left-column,
-  .right-column {
-    flex: 1;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 12px;
-  }
-  
-  .chart-box {
-    text-align: center;
-  }
-  
-  .register-box {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  textarea {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-    margin-top: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    resize: vertical;
-  }
-  
-  .suggestion-box {
-    margin-top: 2rem;
-    background-color: #f4f4f4;
-    padding: 1rem;
-    border-left: 5px solid #00C49F;
-    border-radius: 8px;
-  }
-  
+}
+
+.suggestions-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates two columns */
+  gap: 1rem;
+}
+
+.suggestion-item {
+  background: linear-gradient(to right, rgba(104, 244, 251, 0.4), rgba(49, 231, 234, 0.4));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all var(--animation-timing);
+  cursor: pointer;
+  opacity: 0;
+  color:black;
+  transform: translateY(10px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+.suggestion-item:hover {
+  border-color: var(--border-hover);
+}
+
+.title-text {
+  color: rgba(224, 231, 255, 0.9);
+}
+
+.copy-button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color var(--animation-timing);
+}
+
+.copy-button:hover {
+  color: white;
+}
