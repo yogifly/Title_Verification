@@ -7,7 +7,7 @@ from sentence_transformers import SentenceTransformer
 from utils.preprocessing import preprocess_title
 
 # Paths
-CSV_PATH = 'data/titles(2).csv'
+CSV_PATH = 'data/Titles.csv'
 PICKLE_PATH = 'preprocessed/preprocessed_titles.pkl'
 FAISS_INDEX_PATH = 'preprocessed/faiss_index.index'
 EMBEDDINGS_PATH = 'preprocessed/embeddings.npy'

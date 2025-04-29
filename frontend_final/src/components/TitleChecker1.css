@@ -1,0 +1,465 @@
+
+:root {
+  --primary-color: #7a5cff; /* Soft purplish for main accents */
+  --accent-color: #c084fc;
+  --success-color: #4cd137;
+  --error-color: #ff5e5e;
+  --text-color: #f5f5f5;
+  --light-text: #b0b0b0;
+  --background-dark: #1a1a2e;
+  --background-light: #2e2e48;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --modal-bg: rgba(255, 255, 255, 0.08);
+  --shadow: 0 8px 32px rgba(122, 92, 255, 0.25);
+}
+
+/* Global Base Styles */
+body {
+  background: linear-gradient(135deg, var(--background-dark), var(--background-light));
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem;
+  overflow-x: hidden;
+}
+
+.background-shapes .circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  background: var(--primary-color);
+}
+
+.circle-1 {
+  width: 200px;
+  height: 200px;
+  top: 10%;
+  left: 5%;
+}
+.circle-2 {
+  width: 300px;
+  height: 300px;
+  bottom: 10%;
+  right: 5%;
+}
+.circle-3 {
+  width: 150px;
+  height: 150px;
+  top: 50%;
+  left: 50%;
+}
+.circle-4 {
+  width: 250px;
+  height: 250px;
+  bottom: 20%;
+  left: 10%;
+}
+
+/* Glass Cards and Containers */
+.glass-card,
+.glass-card-inner {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 1.2rem;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.main-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card-header h1 {
+  text-align: center;
+  color: var(--accent-color);
+}
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --primary-color: #00C49F;
+  --accent-color: #26de81;
+  --background-light: #2C3E50;
+  --text-color: #ffffff;
+  --light-text: #bdc3c7;
+}
+
+/* General Styling */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #1a1a1a;
+  color: var(--text-color);
+}
+
+/* Form Container */
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Input Styling */
+form input[type="text"] {
+  width: 300px;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.8rem;
+  background-color: var(--background-light);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+form input[type="text"]::placeholder {
+  color: var(--light-text);
+}
+
+/* Button Styling */
+.verify-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.verify-btn:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.verify-btn:active {
+  transform: scale(0.97);
+}
+
+/* Spinner for Verify Button */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid white;
+  border-top: 2px solid var(--background-dark);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Verification Overlay & Modal */
+.verification-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 26, 46, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+}
+
+.verification-modal {
+  background: var(--modal-bg);
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 0 20px var(--primary-color);
+}
+
+.verification-modal h2 {
+  margin-bottom: 1.5rem;
+  color: var(--accent-color);
+}
+
+/* Verification Steps Checklist */
+.verification-steps-container {
+  margin-top: 1rem;
+}
+
+.verification-step {
+  display: flex;
+  align-items: center;
+  background: var(--background-dark);
+  margin-bottom: 0.8rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  opacity: 0;
+  transform: translateX(30px);
+  animation: slideInRight 0.5s forwards;
+}
+
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.verification-step.completed {
+  background: var(--primary-color);
+}
+
+.verification-step.current {
+  background: var(--accent-color);
+  box-shadow: 0 0 10px var(--primary-color);
+}
+
+.verification-step.failed {
+  background: var(--error-color);
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.step-indicator {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+  font-weight: bold;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.tick-animation {
+  animation: tick 0.5s ease-out forwards;
+}
+
+@keyframes tick {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.step-content {
+  text-align: left;
+}
+
+.step-label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.step-status {
+  font-size: 0.9rem;
+  color: var(--light-text);
+}
+
+/* Connection Lines Between Steps */
+.connection-line {
+  width: 3px;
+  height: 30px;
+  background: var(--background-light);
+  margin: 0 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.connection-line .line-fill {
+  width: 100%;
+  height: 0%;
+  background: var(--primary-color);
+  position: absolute;
+  bottom: 0;
+  transition: height 1s ease;
+}
+
+/* Result Banner */
+.result-banner {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.result-banner.success {
+  background: var(--success-color);
+}
+
+.result-banner.error {
+  background: var(--error-color);
+}
+
+/* Constraints Box */
+.constraints-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--background-light);
+  border-radius: 0.8rem;
+}
+
+.constraint {
+  display: flex;
+  align-items: center;
+  background: var(--background-light);
+  margin: 0.5rem 0;
+  padding: 0.6rem 1rem;
+  border-radius: 0.8rem;
+}
+
+.constraint.pass {
+  border-left: 5px solid var(--success-color);
+}
+
+.constraint.fail {
+  border-left: 5px solid var(--error-color);
+}
+
+.checkbox-wrapper {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.8rem;
+}
+
+.check-mark,
+.cross-mark {
+  font-size: 1.5rem;
+}
+
+/* Progress Bar for Similarity Score */
+.progress-bar {
+  background: var(--background-dark);
+  height: 20px;
+  border-radius: 10px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--primary-color);
+  text-align: center;
+  color: white;
+  font-size: 0.8rem;
+  line-height: 20px;
+}
+
+/* Two-column Layout */
+.two-column {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.left-column,
+.right-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Chart and Registration Form */
+.chart-box h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--accent-color);
+}
+
+.chart-container {
+  background: var(--background-light);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+/* Registration Form Styles */
+.register-box {
+  background: var(--background-light);
+  padding: 1.2rem;
+  border-radius: 1rem;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+
+.register-btn {
+  background: var(--success-color);
+  color: var(--background-dark);
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.register-btn:hover {
+  background: #4dc9d8;
+}
+
+.arrow-icon {
+  font-size: 1.2rem;
+}
+
+/* Tooltip and Legend for Chart */
+.recharts-tooltip-label,
+.recharts-tooltip-item {
+  color: var(--text-color);
+}
+
+.recharts-legend-item-text {
+  color: var(--secondary-color) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .two-column {
+    flex-direction: column;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  .verification-modal {
+    width: 90%;
+    padding: 1.5rem;
+  }
+}
